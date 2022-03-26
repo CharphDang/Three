@@ -1,0 +1,93 @@
+<!-- 
+/*
+* @Author: SF2556
+* @Date:   2018-06-06 10:19:42
+* @Last Modified by:   DangChaofeng
+* @Last Modified time: 2018-06-07 16:03:34
+*/
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- <script src="./js/three.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/three.js/92/three.min.js"></script>
+    <script src="../js/OrbitControls.js"></script>
+    <script src="../js/OBJLoader.js"></script>
+</head>
+
+<body>
+    <canvas id="mainCanvas" width="400px" height="300px"></canvas>
+</body>
+<script>
+function init() {
+    // new一个渲染器
+    let renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('mainCanvas')
+    });
+    renderer.setClearColor(0x000000);
+    // new 一个场景出来
+    let scene = new THREE.Scene();
+    // 定义一个照相机（这个是透视投影的）
+    let camera = new THREE.PerspectiveCamera(40, 4 / 3, 1, 100);
+    camera.position.set(5, 5, 5);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    let loader = new THREE.OBJLoader();
+    loader.load('bg/bg.obj', function() {
+
+    });
+    // scene.add(camera);
+    // light
+    var light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(10, 15, 5);
+    scene.add(light);
+    let cube = new THREE.Mesh(new THREE.CubeGeometry(3, 3, 3, 2, 3, 4), new THREE.MeshLambertMaterial({
+        color: 0xffff00,
+        emissive: 0xff0000
+    }));
+
+    let cube1 = new THREE.Mesh(new THREE.PlaneGeometry(1, 5), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    scene.add(cube);
+    scene.add(cube1);
+
+    function render() {
+        renderer.render(scene, camera);
+    }
+    render();
+    let controls = new THREE.OrbitControls(camera);
+    controls.addEventListener('change', render);
+
+    // 自定义DOM写法
+    let renderer_two = new THREE.WebGLRenderer();
+    renderer_two.setSize(400, 300);
+    document.body.appendChild(renderer_two.domElement);
+    renderer_two.setClearColor(0x000000);
+    // new 一个场景出来
+    let scene_two = new THREE.Scene();
+    // 定义一个照相机（这个是透视投影的）
+    let camera_two = new THREE.OrthographicCamera(-2, 2, 1.5, -1.5, 1, 1000);
+    camera_two.position.set(9, 9, 9);
+    camera_two.lookAt(new THREE.Vector3(0, 0, 0));
+    // scene_two.add(camera_two);
+    // 长方体
+    let cube_two = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    // 球体
+    let cube_two1 = new THREE.Mesh(new THREE.SphereGeometry(1, 20, 20), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    // 圆
+    let cube_two2 = new THREE.Mesh(new THREE.CircleGeometry(1, 20, Math.PI / 3, Math.PI / 3 * 4), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    // 圆柱体
+    let cube_two3 = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 2, 18, 3, true), new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true }));
+    // scene_two.add(cube_two);
+    // scene_two.add(cube_two1);
+    // scene_two.add(cube_two2);
+    scene_two.add(cube_two3);
+    renderer_two.render(scene_two, camera_two);
+}
+window.onload = function() {
+    init();
+}
+</script>
+
+</html>
